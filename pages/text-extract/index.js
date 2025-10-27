@@ -1,5 +1,4 @@
 // pages/text-extract/index.js
-const doubaoAPI = require('../../utils/doubao-api.js');
 const videoParser = require('../../utils/video-parser.js');
 
 Page({
@@ -12,49 +11,15 @@ Page({
     historyList: [],
     currentPlatform: '',
     videoInfo: null,
-    useMockData: true, // 默认使用模拟数据，实际部署时设为false
     apiStatus: 'ready' // ready, loading, success, error
   },
 
   onLoad() {
-    console.log('文案提取页面加载 - 豆包API集成版');
-    
-    // 自动配置用户提供的正确API密钥
-    const apiKey = '5785b6ff-933c-4fce-98ba-957683f11eb6';
-    if (apiKey) {
-      wx.setStorageSync('doubao_api_key', apiKey);
-      doubaoAPI.setApiKey(apiKey);
-      this.setData({ useMockData: false });
-      console.log('已自动配置正确的豆包API密钥，将使用真实API服务');
-    }
-    
     this.loadHistory();
-    
-    // 检查API密钥配置
-    this.checkApiConfig();
   },
 
   onShow() {
-    console.log('文案提取页面显示');
-  },
-
-  // 检查API配置
-  checkApiConfig() {
-    const apiKey = wx.getStorageSync('doubao_api_key');
-    if (apiKey) {
-      doubaoAPI.setApiKey(apiKey);
-      this.setData({ useMockData: false });
-      
-      // 检查API密钥格式
-      if (apiKey.includes(':')) {
-        console.log('已配置豆包API密钥（IAM AK/SK格式），使用真实API');
-        console.log('⚠️ 注意：IAM AK/SK格式可能不适用于豆包API，建议使用单一API Key格式');
-      } else {
-        console.log('已配置豆包API密钥（单一格式），使用真实API');
-      }
-    } else {
-      console.log('未配置API密钥，使用模拟数据');
-    }
+    // 页面显示逻辑
   },
 
   // 加载历史记录
@@ -128,7 +93,7 @@ Page({
 
   // 开始提取文案
   async startExtract() {
-    const { videoLink, useMockData } = this.data;
+    const { videoLink } = this.data;
     
     if (!videoLink.trim()) {
       wx.showToast({
@@ -148,14 +113,8 @@ Page({
       // 直接使用用户输入的内容，不进行链接校验
       const userContent = videoLink.trim();
       
-      // 提取文案
-      let result;
-      if (useMockData) {
-        result = await this.extractWithMock({ platform: '用户输入', title: '用户提供的内容' });
-      } else {
-        console.log('使用豆包API进行文案提取，密钥:', wx.getStorageSync('doubao_api_key') ? '已配置' : '未配置');
-        result = await this.extractWithDoubaoAPI(userContent);
-      }
+      // 提取文案（使用简单的文本处理）
+      const result = await this.extractWithSimpleMethod(userContent);
 
       this.handleExtractSuccess(result, userContent);
       
@@ -164,45 +123,27 @@ Page({
     }
   },
 
-  // 使用豆包API提取文案
-  async extractWithDoubaoAPI(userContent) {
+  // 使用简单方法提取文案
+  async extractWithSimpleMethod(userContent) {
     wx.showLoading({
-      title: 'AI分析中...',
+      title: '分析中...',
       mask: true
     });
 
     try {
-      console.log('开始调用豆包API，输入内容:', userContent.substring(0, 100) + '...');
+      // 模拟处理延迟
+      await new Promise(resolve => setTimeout(resolve, 2000));
       
-      // 直接使用用户输入的内容，不生成视频摘要
-      const result = await doubaoAPI.extractCopyFromVideo(userContent, '用户输入');
-      
-      console.log('豆包API调用成功，返回结果:', result);
+      // 简单的文本处理：返回用户输入的内容
       wx.hideLoading();
-      return result;
+      return `提取结果：${userContent}\n\n提示：当前为演示模式，仅展示基本功能。`;
     } catch (error) {
       wx.hideLoading();
-      
-      // 显示真实的API错误信息
-      console.error('豆包API调用失败:', error);
-      
-      // 不降级到模拟数据，直接显示错误信息
-      throw new Error(`豆包API调用失败: ${error.message}`);
+      throw new Error(`文案提取失败: ${error.message}`);
     }
   },
 
-  // 使用模拟数据提取文案
-  async extractWithMock(videoInfo) {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        const result = doubaoAPI.simulateExtraction(
-          videoParser.generateVideoSummary(videoInfo), 
-          videoInfo.platform
-        );
-        resolve(result);
-      }, 2000);
-    });
-  },
+
 
   // 处理提取成功
   handleExtractSuccess(result, originalLink) {
@@ -238,26 +179,17 @@ Page({
     let errorMessage = error.message || '未知错误';
     let solution = '';
     
-    if (errorMessage.includes('认证失败') || errorMessage.includes('401') || errorMessage.includes('403')) {
-      solution = '\n\n💡 解决方案：\n' +
-                '1. 检查API密钥是否正确\n' +
-                '2. 确认使用的是单一API Key格式（非IAM AK/SK）\n' +
-                '3. 确保API密钥有足够的权限\n' +
-                '4. 重新配置API密钥';
-    } else if (errorMessage.includes('网络') || errorMessage.includes('连接')) {
+    if (errorMessage.includes('网络') || errorMessage.includes('连接')) {
       solution = '\n\n💡 解决方案：\n' +
                 '1. 检查网络连接是否正常\n' +
-                '2. 确认API服务是否可用\n' +
-                '3. 稍后重试';
+                '2. 稍后重试';
     } else if (errorMessage.includes('超时')) {
       solution = '\n\n💡 解决方案：\n' +
-                '1. 网络连接较慢，请稍后重试\n' +
-                '2. 检查API服务状态';
+                '1. 网络连接较慢，请稍后重试';
     } else {
       solution = '\n\n💡 解决方案：\n' +
-                '1. 检查API密钥配置\n' +
-                '2. 确认网络连接正常\n' +
-                '3. 联系技术支持';
+                '1. 检查网络连接正常\n' +
+                '2. 联系技术支持';
     }
     
     this.setData({
@@ -281,8 +213,7 @@ Page({
       platform: platform,
       link: link.length > 50 ? link.substring(0, 50) + '...' : link,
       result: result,
-      time: new Date().toLocaleString('zh-CN'),
-      apiUsed: !this.data.useMockData
+      time: new Date().toLocaleString('zh-CN')
     };
 
     let history = wx.getStorageSync('textExtractHistory') || [];
@@ -378,52 +309,19 @@ Page({
     });
   },
 
-  // 配置API密钥
+  // 配置功能（已移除API密钥配置）
   configApiKey() {
-    const currentKey = wx.getStorageSync('doubao_api_key') || '';
-    
     wx.showModal({
-      title: '配置豆包API密钥',
-      editable: true,
-      placeholderText: '请输入您的豆包API密钥',
-      content: currentKey,
-      success: (res) => {
-        if (res.confirm) {
-          if (res.content.trim()) {
-            // 保存API密钥
-            wx.setStorageSync('doubao_api_key', res.content.trim());
-            doubaoAPI.setApiKey(res.content.trim());
-            this.setData({ useMockData: false });
-            
-            wx.showToast({
-              title: 'API密钥配置成功',
-              icon: 'success',
-              duration: 2000
-            });
-            
-            console.log('已配置豆包API密钥，将使用真实API服务');
-          } else {
-            // 清空API密钥，使用模拟数据
-            wx.removeStorageSync('doubao_api_key');
-            doubaoAPI.setApiKey('');
-            this.setData({ useMockData: true });
-            
-            wx.showToast({
-              title: '已切换为演示模式',
-              icon: 'success',
-              duration: 2000
-            });
-            
-            console.log('未配置API密钥，使用模拟数据');
-          }
-        }
-      }
+      title: '功能说明',
+      content: '当前为演示模式，仅展示基本功能。',
+      showCancel: false,
+      confirmText: '知道了'
     });
   },
 
   onShareAppMessage() {
     return {
-      title: 'AI文案提取神器 - 豆包AI智能分析',
+      title: 'AI文案提取神器',
       path: '/pages/text-extract/index',
       imageUrl: '/images/share-text-extract.jpg'
     };

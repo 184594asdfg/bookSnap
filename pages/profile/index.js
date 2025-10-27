@@ -59,8 +59,6 @@ Page({
     wx.getUserProfile({
       desc: '用于完善会员资料',
       success: (res) => {
-        console.log('获取用户信息成功', res);
-        
         const userInfo = {
           avatarUrl: res.userInfo.avatarUrl,
           nickName: res.userInfo.nickName,
@@ -90,7 +88,6 @@ Page({
         });
       },
       fail: (err) => {
-        console.error('获取用户信息失败', err);
         wx.showToast({
           title: '登录失败',
           icon: 'none'

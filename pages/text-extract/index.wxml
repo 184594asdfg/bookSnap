@@ -5,7 +5,7 @@
       <text class="header-icon">🤖</text>
       <text>AI文案提取</text>
     </view>
-    <view class="header-desc">粘贴视频链接，豆包AI智能分析提取</view>
+    <view class="header-desc">粘贴视频链接，智能分析提取</view>
     <view class="header-actions">
       <text class="config-btn" bindtap="configApiKey">配置API</text>
     </view>
@@ -16,9 +16,9 @@
     <view class="status-item {{apiStatus}}">
       <text class="status-icon">{{apiStatus === 'loading' ? '⏳' : apiStatus === 'success' ? '✅' : '❌'}}</text>
       <text class="status-text">
-        {{apiStatus === 'loading' ? 'AI分析中...' : apiStatus === 'success' ? '提取成功' : '提取失败'}}
+        {{apiStatus === 'loading' ? '分析中...' : apiStatus === 'success' ? '提取成功' : '提取失败'}}
       </text>
-      <text class="status-desc" wx:if="{{useMockData}}">(演示模式)</text>
+      
     </view>
   </view>
 
@@ -54,7 +54,7 @@
       bindtap="startExtract"
       disabled="{{!videoLink}}"
     >
-      {{extracting ? 'AI分析中...' : '开始AI提取'}}
+      {{extracting ? '分析中...' : '开始提取'}}
     </button>
   </view>
 
@@ -75,7 +75,7 @@
   <!-- 提取结果 -->
   <view class="result-section" wx:if="{{extractResult}}">
     <view class="result-header">
-      <text class="result-title">AI提取结果</text>
+      <text class="result-title">提取结果</text>
       <view class="result-actions">
         <text class="copy-btn" bindtap="copyResult">复制</text>
         <text class="edit-btn" bindtap="editResult">编辑</text>
@@ -89,7 +89,7 @@
     <view class="result-stats">
       <text>字数：{{wordCount}} 字</text>
       <text>提取时间：{{extractTime}}</text>
-      <text wx:if="{{useMockData}}">模式：演示</text>
+      
     </view>
   </view>
 
@@ -114,13 +114,13 @@
   <view class="empty-state" wx:if="{{!extractResult && historyList.length === 0}}">
     <text class="empty-icon">🤖</text>
     <text class="empty-text">AI文案提取助手</text>
-    <text class="empty-desc">粘贴视频链接，让豆包AI帮你提取文案</text>
+    <text class="empty-desc">粘贴视频链接，智能提取文案</text>
   </view>
 
   <!-- 加载状态 -->
   <view class="loading-state" wx:if="{{extracting}}">
     <view class="loading-spinner"></view>
-    <text class="loading-text">豆包AI正在分析视频内容...</text>
+    <text class="loading-text">正在分析视频内容...</text>
     <text class="loading-desc">解析链接 → 获取信息 → AI分析 → 生成文案</text>
   </view>
 </view>

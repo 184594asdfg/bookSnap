@@ -86,11 +86,7 @@ Page({
     this.loadCovers(true);
   },
 
-  // 过滤封面（已废弃，改为API接口查询）
-  filterCovers() {
-    // 此方法已废弃，所有过滤逻辑都在API接口中处理
-    this.loadCovers(true);
-  },
+
 
   // 生成COS图片URL
   generateImageUrl(fileName) {
@@ -160,12 +156,13 @@ Page({
           const responseData = res.data.data;
           let newCovers = responseData.list || [];
           
-          console.log('获取到封面数据数量:', newCovers.length);
-          
-          // 如果API返回空数据，使用模拟数据
+          // 如果API返回空数据，显示空状态
           if (newCovers.length === 0) {
-            console.log('API返回空数据，使用模拟数据');
-            this.loadMockData(reset);
+            this.setData({
+              coverList: [],
+              currentPage: 1,
+              hasMore: false
+            });
             return;
           }
           
@@ -176,7 +173,6 @@ Page({
               cover.title.toLowerCase().includes(keyword) ||
               (cover.author && cover.author.toLowerCase().includes(keyword))
             );
-            console.log('前端搜索过滤后数据数量:', newCovers.length);
           }
           
           // 处理图片URL，直接使用接口返回的图片数据
@@ -185,8 +181,6 @@ Page({
             image: cover.file_name ? this.generateImageUrl(cover.file_name) : '',
             author: cover.author || '未知作者'
           }));
-          
-          console.log('处理后的封面数据:', processedCovers);
           
           if (reset) {
             this.setData({
@@ -201,28 +195,18 @@ Page({
               hasMore: responseData.total > this.data.coverList.length + processedCovers.length
             });
           }
-          
-          console.log('数据设置完成，当前封面数量:', this.data.coverList.length);
         } else {
-          console.error('API响应格式错误:', res);
           wx.showToast({
             title: '数据加载失败',
             icon: 'none'
           });
-          
-          // API响应格式错误时也使用模拟数据
-          this.loadMockData(reset);
         }
       },
       fail: (err) => {
-        console.error('API请求失败:', err);
         wx.showToast({
           title: '网络请求失败',
           icon: 'none'
         });
-        
-        // 开发环境下使用模拟数据
-        this.loadMockData(reset);
       },
       complete: () => {
         this.setData({
@@ -233,158 +217,7 @@ Page({
     });
   },
 
-  // 加载模拟数据（开发环境使用）
-  loadMockData(reset = false) {
-    const mockCovers = [
-      {
-        material_id: 1,
-        title: '原子习惯',
-        description: null,
-        file_name: '《原子习惯》.jpg',
-        category: 'literature',
-        author: '詹姆斯·克利尔',
-        like_count: 0,
-        status: 1,
-        sort_order: 1,
-        create_time: '2025-10-26T17:44:43.215Z',
-        design_style: 'minimal',
-        color_theme: 'neutral'
-      },
-      {
-        material_id: 2,
-        title: '追风筝的人',
-        description: null,
-        file_name: '《追风筝的人》.jpg',
-        category: 'literature',
-        author: '卡勒德·胡赛尼',
-        like_count: 0,
-        status: 1,
-        sort_order: 2,
-        create_time: '2025-10-26T17:44:43.215Z',
-        design_style: 'vintage',
-        color_theme: 'warm'
-      },
-      {
-        material_id: 3,
-        title: '爱你就像爱生命',
-        description: null,
-        file_name: '爱你就像爱生命.jpg',
-        category: 'literature',
-        author: '王小波',
-        like_count: 0,
-        status: 1,
-        sort_order: 3,
-        create_time: '2025-10-26T17:44:43.215Z',
-        design_style: 'illustration',
-        color_theme: 'warm'
-      },
-      {
-        material_id: 4,
-        title: '时间简史',
-        description: null,
-        file_name: '时间简史.jpg',
-        category: 'science',
-        author: '史蒂芬·霍金',
-        like_count: 0,
-        status: 1,
-        sort_order: 4,
-        create_time: '2025-10-26T17:44:43.215Z',
-        design_style: 'minimal',
-        color_theme: 'cool'
-      },
-      {
-        material_id: 5,
-        title: '人类简史',
-        description: null,
-        file_name: '人类简史.jpg',
-        category: 'science',
-        author: '尤瓦尔·赫拉利',
-        like_count: 0,
-        status: 1,
-        sort_order: 5,
-        create_time: '2025-10-26T17:44:43.215Z',
-        design_style: 'abstract',
-        color_theme: 'neutral'
-      },
-      {
-        material_id: 6,
-        title: '原则',
-        description: null,
-        file_name: '原则.jpg',
-        category: 'inspiration',
-        author: '瑞·达利欧',
-        like_count: 0,
-        status: 1,
-        sort_order: 6,
-        create_time: '2025-10-26T17:44:43.215Z',
-        design_style: 'minimal',
-        color_theme: 'bright'
-      },
-      {
-        material_id: 7,
-        title: '艺术的故事',
-        description: null,
-        file_name: '艺术的故事.jpg',
-        category: 'art',
-        author: 'E.H.贡布里希',
-        like_count: 0,
-        status: 1,
-        sort_order: 7,
-        create_time: '2025-10-26T17:44:43.215Z',
-        design_style: 'illustration',
-        color_theme: 'bright'
-      },
-      {
-        material_id: 8,
-        title: '小王子',
-        description: null,
-        file_name: '小王子.jpg',
-        category: 'children',
-        author: '安托万·德·圣-埃克苏佩里',
-        like_count: 0,
-        status: 1,
-        sort_order: 8,
-        create_time: '2025-10-26T17:44:43.215Z',
-        design_style: 'illustration',
-        color_theme: 'bright'
-      }
-    ];
 
-    // 根据筛选条件过滤数据
-    let filteredCovers = mockCovers;
-    
-    if (this.data.selectedCategory !== 'all') {
-      filteredCovers = filteredCovers.filter(cover => cover.category === this.data.selectedCategory);
-    }
-    
-    if (this.data.selectedDesignStyle !== 'all') {
-      filteredCovers = filteredCovers.filter(cover => cover.design_style === this.data.selectedDesignStyle);
-    }
-    
-    if (this.data.selectedColorTheme !== 'all') {
-      filteredCovers = filteredCovers.filter(cover => cover.color_theme === this.data.selectedColorTheme);
-    }
-
-    // 处理图片URL，添加COS前缀
-    const processedCovers = filteredCovers.map(cover => ({
-      ...cover,
-      image: this.generateImageUrl(cover.file_name)
-    }));
-
-    if (reset) {
-      this.setData({
-        coverList: processedCovers,
-        currentPage: 1,
-        hasMore: false
-      });
-    } else {
-      this.setData({
-        coverList: [...this.data.coverList, ...processedCovers],
-        currentPage: this.data.currentPage + 1,
-        hasMore: false
-      });
-    }
-  },
 
   // 预览封面
   previewCover(e) {

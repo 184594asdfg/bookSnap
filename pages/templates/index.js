@@ -62,7 +62,6 @@ Page({
       method: 'GET',
       success: (res) => {
         wx.hideLoading();
-        console.log('API响应数据:', res.data);
         
         try {
           // 检查响应状态和数据格式
@@ -96,82 +95,17 @@ Page({
             throw new Error(`API请求失败: ${res.data.message || '未知错误'}`);
           }
         } catch (error) {
-          console.error('数据处理错误:', error);
           wx.showToast({
             title: '数据格式错误',
             icon: 'error'
-          });
-          
-          // 使用模拟数据作为备选方案
-          this.setData({
-            templateList: [
-              {
-                id: '1',
-                image: '/images/default-template.jpg',
-                title: '示例模板',
-                description: '这是一个示例模板',
-                category: '示例',
-                duration: '30秒',
-                isFree: true,
-                isVIP: false,
-                usageCount: 100,
-                isFavorite: false
-              }
-            ]
           });
         }
       },
       fail: (err) => {
         wx.hideLoading();
-        console.error('API请求失败:', err);
         wx.showToast({
-          title: '网络错误，使用模拟数据',
+          title: '网络请求失败',
           icon: 'none'
-        });
-        
-        // 网络错误时使用模拟数据
-        this.setData({
-          templateList: [
-            {
-              id: '1',
-              image: '/images/default-template.jpg',
-              video: 'https://booksnap-1353983545.cos.ap-beijing.myqcloud.com/bookTemp/template1.mp4',
-              title: '简约商务模板',
-              description: '适合商务演示和报告',
-              category: '商务',
-              duration: '30秒',
-              isFree: true,
-              isVIP: false,
-              usageCount: 1234,
-              isFavorite: false
-            },
-            {
-              id: '2',
-              image: '/images/default-template.jpg',
-              video: 'https://booksnap-1353983545.cos.ap-beijing.myqcloud.com/bookTemp/template2.mp4',
-              title: '创意艺术模板',
-              description: '充满艺术感的创意设计',
-              category: '艺术',
-              duration: '45秒',
-              isFree: false,
-              isVIP: true,
-              usageCount: 567,
-              isFavorite: false
-            },
-            {
-              id: '3',
-              image: '/images/default-template.jpg',
-              video: 'https://booksnap-1353983545.cos.ap-beijing.myqcloud.com/bookTemp/template3.mp4',
-              title: '教育课件模板',
-              description: '适合教学和培训场景',
-              category: '教育',
-              duration: '60秒',
-              isFree: true,
-              isVIP: false,
-              usageCount: 890,
-              isFavorite: false
-            }
-          ]
         });
       }
     });
@@ -197,7 +131,6 @@ Page({
 
   // 视频播放事件
   onVideoPlay(e) {
-    console.log('视频开始播放', e);
     wx.showToast({
       title: '视频开始播放',
       icon: 'success',
@@ -207,7 +140,6 @@ Page({
 
   // 视频错误事件
   onVideoError(e) {
-    console.error('视频播放错误', e.detail);
     wx.showToast({
       title: '视频播放失败',
       icon: 'error'
@@ -349,204 +281,7 @@ Page({
     };
   },
 
-  // 导出模板
-  exportTemplates() {
-    const { templateList } = this.data;
-    
-    if (!templateList || templateList.length === 0) {
-      wx.showToast({
-        title: '暂无模板可导出',
-        icon: 'none'
-      });
-      return;
-    }
 
-    wx.showLoading({
-      title: '准备导出中...'
-    });
-
-    // 模拟导出处理
-    setTimeout(() => {
-      wx.hideLoading();
-      
-      // 生成导出数据
-      const exportData = {
-        timestamp: new Date().toISOString(),
-        total: templateList.length,
-        templates: templateList.map(template => ({
-          id: template.id,
-          title: template.title,
-          category: template.category,
-          duration: template.duration,
-          isVIP: template.isVIP,
-          isFree: template.isFree,
-          usageCount: template.usageCount,
-          image: template.image
-        }))
-      };
-
-      // 显示导出选项
-      wx.showActionSheet({
-        itemList: ['导出为JSON文件', '导出为CSV文件', '复制到剪贴板'],
-        success: (res) => {
-          const tapIndex = res.tapIndex;
-          
-          switch (tapIndex) {
-            case 0: // JSON文件
-              this.exportAsJSON(exportData);
-              break;
-            case 1: // CSV文件
-              this.exportAsCSV(exportData);
-              break;
-            case 2: // 剪贴板
-              this.copyToClipboard(exportData);
-              break;
-          }
-        },
-        fail: () => {
-          wx.showToast({
-            title: '导出取消',
-            icon: 'none'
-          });
-        }
-      });
-    }, 1000);
-  },
-
-  // 导出为JSON文件
-  exportAsJSON(data) {
-    const jsonString = JSON.stringify(data, null, 2);
-    const fileName = `视频模板库_${new Date().getTime()}.json`;
-    
-    // 在小程序中，可以使用文件系统API保存文件
-    wx.showModal({
-      title: '导出成功',
-      content: `已生成JSON文件: ${fileName}\n\n您可以在文件管理器中查看此文件`,
-      showCancel: false,
-      success: () => {
-        console.log('导出数据:', jsonString);
-      }
-    });
-  },
-
-  // 导出为CSV文件
-  exportAsCSV(data) {
-    // 生成CSV内容
-    let csvContent = '模板ID,模板名称,分类,时长,VIP,免费,使用次数,图片链接\n';
-    
-    data.templates.forEach(template => {
-      csvContent += `${template.id},${template.title},${template.category},${template.duration},${template.isVIP},${template.isFree},${template.usageCount},${template.image}\n`;
-    });
-    
-    const fileName = `视频模板库_${new Date().getTime()}.csv`;
-    
-    wx.showModal({
-      title: '导出成功',
-      content: `已生成CSV文件: ${fileName}\n\n您可以在文件管理器中查看此文件`,
-      showCancel: false,
-      success: () => {
-        console.log('导出数据:', csvContent);
-      }
-    });
-  },
-
-  // 复制到剪贴板
-  copyToClipboard(data) {
-    const summary = `视频模板库导出\n总计: ${data.total}个模板\n导出时间: ${new Date().toLocaleString()}`;
-    
-    wx.setClipboardData({
-      data: summary,
-      success: () => {
-        wx.showToast({
-          title: '已复制到剪贴板',
-          icon: 'success'
-        });
-      }
-    });
-  },
-  // 导出单个模板
-  exportSingleTemplate(e) {
-    const template = e.currentTarget.dataset.template;
-    
-    if (!template) {
-      wx.showToast({
-        title: '模板数据错误',
-        icon: 'error'
-      });
-      return;
-    }
-
-    wx.showActionSheet({
-      itemList: ['导出模板信息', '复制模板链接', '分享模板'],
-      success: (res) => {
-        const tapIndex = res.tapIndex;
-        
-        switch (tapIndex) {
-          case 0: // 导出模板信息
-            this.exportTemplateInfo(template);
-            break;
-          case 1: // 复制模板链接
-            this.copyTemplateLink(template);
-            break;
-          case 2: // 分享模板
-            this.shareSingleTemplate(template);
-            break;
-        }
-      },
-      fail: () => {
-        wx.showToast({
-          title: '操作取消',
-          icon: 'none'
-        });
-      }
-    });
-  },
-
-  // 导出模板信息
-  exportTemplateInfo(template) {
-    const templateInfo = {
-      模板名称: template.title,
-      模板ID: template.id,
-      分类: template.category,
-      时长: template.duration,
-      VIP模板: template.isVIP ? '是' : '否',
-      免费模板: template.isFree ? '是' : '否',
-      使用次数: template.usageCount,
-      图片链接: template.image,
-      描述: template.description,
-      导出时间: new Date().toLocaleString()
-    };
-
-    const infoText = Object.entries(templateInfo)
-      .map(([key, value]) => `${key}: ${value}`)
-      .join('\n');
-
-    wx.setClipboardData({
-      data: infoText,
-      success: () => {
-        wx.showToast({
-          title: '模板信息已复制',
-          icon: 'success'
-        });
-      }
-    });
-  },
-
-  // 复制模板链接
-  copyTemplateLink(template) {
-    // 生成模板链接（这里使用图片链接作为示例）
-    const templateLink = template.image;
-    
-    wx.setClipboardData({
-      data: templateLink,
-      success: () => {
-        wx.showToast({
-          title: '模板链接已复制',
-          icon: 'success'
-        });
-      }
-    });
-  },
 
   // 分享单个模板
   shareSingleTemplate(template) {
