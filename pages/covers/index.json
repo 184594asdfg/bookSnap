@@ -1,0 +1,8 @@
+{
+  "navigationBarTitleText": "封面素材库",
+  "navigationBarBackgroundColor": "#8B4513",
+  "navigationBarTextStyle": "white",
+  "enablePullDownRefresh": true,
+  "backgroundColor": "#f8f4f0",
+  "backgroundTextStyle": "dark"
+}

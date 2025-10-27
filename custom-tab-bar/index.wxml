@@ -1,0 +1,14 @@
+<view class="custom-tab-bar">
+  <view class="tab-bar-item {{current === 0 ? 'active' : ''}}" bindtap="switchTab" data-path="pages/home/index" data-index="0">
+    <image class="tab-icon" src="{{current === 0 ? '/images/tab-home-active.png' : '/images/tab-home.png'}}"></image>
+    <text class="tab-text">首页</text>
+  </view>
+  <view class="tab-bar-item {{current === 1 ? 'active' : ''}}" bindtap="switchTab" data-path="pages/announcement/index" data-index="1">
+    <view class="tab-icon">📢</view>
+    <text class="tab-text">公告</text>
+  </view>
+  <view class="tab-bar-item {{current === 2 ? 'active' : ''}}" bindtap="switchTab" data-path="pages/profile/index" data-index="2">
+    <image class="tab-icon" src="{{current === 2 ? '/images/tab-profile-active.png' : '/images/tab-profile.png'}}"></image>
+    <text class="tab-text">我的</text>
+  </view>
+</view>

@@ -1,0 +1,83 @@
+<view class="container">
+  <!-- 顶部英雄区域 -->
+  <view class="hero-section">
+    <view class="hero-content">
+      <!-- 应用logo和名称 -->
+      <view class="app-logo">
+        <text class="logo-icon">📚</text>
+        <view class="logo-text">
+          <text class="app-name">书单助手</text>
+          <text class="app-tagline">智能创作，轻松上手</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 功能入口区域 -->
+  <view class="features-section">
+    <view class="features-grid">
+      <!-- 封面素材 -->
+      <view class="feature-card" bindtap="gotoCovers">
+        <view class="feature-icon">📖</view>
+        <view class="feature-info">
+          <text class="feature-name">封面素材</text>
+          <text class="feature-desc">海量高清书籍封面</text>
+        </view>
+        <view class="feature-badge">推荐</view>
+      </view>
+
+      <!-- 视频模板 -->
+      <view class="feature-card" bindtap="gotoTemplates">
+        <view class="feature-icon">🎬</view>
+        <view class="feature-info">
+          <text class="feature-name">视频模板</text>
+          <text class="feature-desc">热门书单视频模板</text>
+        </view>
+        <view class="feature-badge">热门</view>
+      </view>
+
+      <!-- 去水印 -->
+      <view class="feature-card disabled" bindtap="gotoWatermark">
+        <view class="feature-icon">💧</view>
+        <view class="feature-info">
+          <text class="feature-name">去水印</text>
+          <text class="feature-desc">智能去除视频水印</text>
+        </view>
+        <view class="feature-badge coming-soon">即将上线</view>
+      </view>
+
+      <!-- 文案提取 -->
+      <view class="feature-card disabled" bindtap="gotoTextExtract">
+        <view class="feature-icon">📝</view>
+        <view class="feature-info">
+          <text class="feature-name">文案提取</text>
+          <text class="feature-desc">智能提取视频文案</text>
+        </view>
+        <view class="feature-badge coming-soon">即将上线</view>
+      </view>
+
+      <!-- 热门素材 -->
+      <view class="feature-card disabled" bindtap="gotoHotMaterials">
+        <view class="feature-icon">🎨</view>
+        <view class="feature-info">
+          <text class="feature-name">热门素材</text>
+          <text class="feature-desc">丰富的剪辑素材库</text>
+        </view>
+        <view class="feature-badge coming-soon">即将上线</view>
+      </view>
+
+      <!-- 推荐字体 -->
+      <view class="feature-card disabled" bindtap="gotoFonts">
+        <view class="feature-icon">🔤</view>
+        <view class="feature-info">
+          <text class="feature-name">推荐字体</text>
+          <text class="feature-desc">精选书单专用字体</text>
+        </view>
+        <view class="feature-badge coming-soon">即将上线</view>
+      </view>
+    </view>
+  </view>
+
+
+
+</view>

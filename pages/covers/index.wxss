@@ -1,0 +1,478 @@
+/* 封面素材库页面样式 */
+.container {
+  padding: 20rpx;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+}
+
+/* 页面头部 */
+.page-header {
+  text-align: center;
+  margin-bottom: 40rpx;
+}
+
+.header-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #fff;
+  margin-bottom: 16rpx;
+}
+
+.header-icon {
+  font-size: 40rpx;
+  margin-right: 16rpx;
+}
+
+.header-desc {
+  font-size: 28rpx;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* 搜索区域 */
+.search-section {
+  background: #fff;
+  border-radius: 20rpx;
+  padding: 30rpx;
+  margin-bottom: 30rpx;
+  box-shadow: 0 8rpx 32rpx rgba(0, 0, 0, 0.1);
+}
+
+.search-input {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20rpx;
+}
+
+.search-field {
+  flex: 1;
+  padding: 20rpx;
+  border: 2rpx solid #dee2e6;
+  border-radius: 12rpx;
+  font-size: 28rpx;
+  background: #f8f9fa;
+  color: #333;
+  transition: all 0.3s ease;
+}
+
+.search-field:focus {
+  border-color: #667eea;
+  background: #fff;
+  box-shadow: 0 0 0 3rpx rgba(102, 126, 234, 0.1);
+}
+
+.search-placeholder {
+  color: #999;
+  font-size: 28rpx;
+}
+
+.search-icon {
+  margin-left: 20rpx;
+  font-size: 32rpx;
+  color: #667eea;
+  padding: 20rpx;
+  background: #f8f9fa;
+  border-radius: 12rpx;
+  transition: all 0.3s ease;
+}
+
+.search-icon:active {
+  background: #667eea;
+  color: #fff;
+}
+
+/* 书籍类型分类 */
+.category-section {
+  background: #fff;
+  border-radius: 20rpx;
+  padding: 20rpx 30rpx;
+  margin-bottom: 20rpx;
+  box-shadow: 0 8rpx 32rpx rgba(0, 0, 0, 0.1);
+}
+
+.category-title {
+  display: block;
+  font-size: 28rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 20rpx;
+}
+
+.category-scroll {
+  white-space: nowrap;
+  -webkit-overflow-scrolling: touch; /* 平滑滚动 */
+}
+
+.category-list {
+  display: inline-flex;
+  gap: 16rpx; /* 减小间距 */
+  padding-right: 30rpx; /* 添加右边距，让最后一个分类也能完整显示 */
+}
+
+.category-item {
+  display: flex;
+  align-items: center;
+  padding: 12rpx 20rpx; /* 减小内边距 */
+  background: #f5f5f5;
+  border-radius: 24rpx;
+  font-size: 24rpx; /* 减小字体大小 */
+  color: #666;
+  transition: all 0.3s;
+  white-space: nowrap;
+  flex-shrink: 0; /* 防止分类项被压缩 */
+}
+
+.category-icon {
+  margin-right: 8rpx;
+  font-size: 28rpx;
+}
+
+.category-item.active {
+  background: #1890ff;
+  color: #fff;
+}
+
+/* 排序筛选区域 */
+.filter-section {
+  background: #fff;
+  border-radius: 20rpx;
+  padding: 20rpx 30rpx;
+  margin-bottom: 30rpx;
+  box-shadow: 0 8rpx 32rpx rgba(0, 0, 0, 0.1);
+}
+
+.filter-list {
+  display: flex;
+  gap: 20rpx;
+}
+
+.filter-item {
+  padding: 12rpx 24rpx;
+  background: #f5f5f5;
+  border-radius: 24rpx;
+  font-size: 26rpx;
+  color: #666;
+  transition: all 0.3s;
+}
+
+.filter-item.active {
+  background: #1890ff;
+  color: #fff;
+}
+
+.filter-group-list {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+/* 封面网格 */
+.covers-section {
+  background: #fff;
+  border-radius: 20rpx;
+  padding: 30rpx;
+  box-shadow: 0 8rpx 32rpx rgba(0, 0, 0, 0.1);
+}
+
+.covers-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 30rpx;
+}
+
+.cover-item {
+  background: #f0f2f5;
+  border-radius: 16rpx;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  position: relative;
+  border: 2rpx solid #e8e8e8;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.08);
+}
+
+.cover-item:active {
+  transform: scale(0.95);
+}
+
+.cover-image {
+  width: 100%;
+  height: 400rpx;
+  background: #f5f5f5;
+}
+
+.cover-info {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 20rpx;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.3) 50%, transparent 100%);
+  color: #fff;
+}
+
+.cover-title {
+  display: block;
+  font-size: 28rpx;
+  font-weight: bold;
+  color: #fff;
+  margin-bottom: 8rpx;
+  text-shadow: 0 1rpx 2rpx rgba(0, 0, 0, 0.5);
+}
+
+.cover-author {
+  display: block;
+  font-size: 22rpx;
+  color: rgba(255, 255, 255, 0.9);
+  text-shadow: 0 1rpx 2rpx rgba(0, 0, 0, 0.5);
+}
+
+.cover-actions-top {
+  position: absolute;
+  top: 16rpx;
+  right: 16rpx;
+  z-index: 10;
+}
+
+.cover-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 12rpx;
+}
+
+.action-btn {
+  font-size: 22rpx;
+  padding: 8rpx 20rpx;
+  border-radius: 16rpx;
+  transition: all 0.3s ease;
+  background: rgba(255, 255, 255, 0.9);
+  color: #333;
+  font-weight: 500;
+  border: 1rpx solid rgba(255, 255, 255, 0.5);
+}
+
+.export-btn {
+  background: rgba(40, 167, 69, 0.9);
+  color: #fff;
+}
+
+.action-btn:active {
+  transform: scale(0.95);
+  background: rgba(255, 255, 255, 1);
+}
+
+.export-btn:active {
+  background: rgba(40, 167, 69, 1);
+}
+
+/* 空状态 */
+.empty-state {
+  text-align: center;
+  padding: 80rpx 20rpx;
+  color: #666;
+}
+
+.empty-icon {
+  font-size: 80rpx;
+  margin-bottom: 20rpx;
+}
+
+.empty-text {
+  display: block;
+  font-size: 32rpx;
+  margin-bottom: 8rpx;
+}
+
+.empty-desc {
+  display: block;
+  font-size: 24rpx;
+  opacity: 0.7;
+}
+
+/* 加载更多 */
+.load-more {
+  text-align: center;
+  margin-top: 40rpx;
+}
+
+.load-btn {
+  background: #667eea;
+  color: #fff;
+  border: none;
+  border-radius: 12rpx;
+  padding: 20rpx 40rpx;
+  font-size: 28rpx;
+}
+
+/* 预览模态框 */
+.preview-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-mask {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(10rpx);
+}
+
+.modal-content {
+  position: relative;
+  width: 90%;
+  max-width: 600rpx;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 24rpx;
+  padding: 40rpx;
+  box-shadow: 0 25rpx 50rpx rgba(0, 0, 0, 0.4);
+  border: 1rpx solid rgba(255, 255, 255, 0.1);
+}
+
+/* 预览头部 */
+.preview-header {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-bottom: 30rpx;
+}
+
+.preview-close {
+  font-size: 36rpx;
+  color: rgba(255, 255, 255, 0.8);
+  padding: 12rpx;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  width: 60rpx;
+  height: 60rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.preview-close:active {
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(0.9);
+}
+
+/* 图片容器 */
+.image-container {
+  width: 100%;
+  height: 400rpx;
+  border-radius: 16rpx;
+  margin-bottom: 30rpx;
+  background: rgba(255, 255, 255, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(10rpx);
+  border: 1rpx solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8rpx 32rpx rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+}
+
+.preview-image {
+  width: 100%;
+  height: 100%;
+  border-radius: 16rpx;
+  object-fit: contain;
+}
+
+.preview-info {
+  margin-bottom: 30rpx;
+  padding: 24rpx;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 16rpx;
+  backdrop-filter: blur(10rpx);
+  border: 1rpx solid rgba(255, 255, 255, 0.1);
+}
+
+.preview-title {
+  display: block;
+  font-size: 36rpx;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 12rpx;
+  text-shadow: 0 2rpx 4rpx rgba(0, 0, 0, 0.3);
+  letter-spacing: 0.5rpx;
+}
+
+.preview-author {
+  display: block;
+  font-size: 28rpx;
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 20rpx;
+  font-weight: 500;
+}
+
+.preview-desc {
+  display: block;
+  font-size: 26rpx;
+  color: rgba(255, 255, 255, 0.8);
+  line-height: 1.6;
+  text-align: center;
+  letter-spacing: 0.3rpx;
+}
+
+.preview-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+  flex-shrink: 0;
+}
+
+.preview-btn {
+  background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
+  color: #fff;
+  border: none;
+  border-radius: 16rpx;
+  padding: 24rpx;
+  font-size: 30rpx;
+  font-weight: 600;
+  height: auto;
+  line-height: 1.4;
+  box-shadow: 0 8rpx 20rpx rgba(255, 107, 107, 0.3);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.preview-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s ease;
+}
+
+.preview-btn:active::before {
+  left: 100%;
+}
+
+.save-btn {
+  width: 100%;
+  background: linear-gradient(135deg, #4ecdc4 0%, #44a08d 100%);
+  font-weight: bold;
+  padding: 26rpx;
+  font-size: 32rpx;
+  box-shadow: 0 8rpx 20rpx rgba(78, 205, 196, 0.3);
+}
+
+.save-btn:active {
+  background: linear-gradient(135deg, #45b7af 0%, #3c8f7d 100%);
+  transform: translateY(2rpx);
+  box-shadow: 0 4rpx 10rpx rgba(78, 205, 196, 0.3);
+}

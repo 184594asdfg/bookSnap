@@ -1,0 +1,126 @@
+<view class="container">
+  <!-- 页面头部 -->
+  <view class="page-header">
+    <view class="header-title">
+      <text class="header-icon">🤖</text>
+      <text>AI文案提取</text>
+    </view>
+    <view class="header-desc">粘贴视频链接，豆包AI智能分析提取</view>
+    <view class="header-actions">
+      <text class="config-btn" bindtap="configApiKey">配置API</text>
+    </view>
+  </view>
+
+  <!-- API状态提示 -->
+  <view class="api-status" wx:if="{{apiStatus !== 'ready'}}">
+    <view class="status-item {{apiStatus}}">
+      <text class="status-icon">{{apiStatus === 'loading' ? '⏳' : apiStatus === 'success' ? '✅' : '❌'}}</text>
+      <text class="status-text">
+        {{apiStatus === 'loading' ? 'AI分析中...' : apiStatus === 'success' ? '提取成功' : '提取失败'}}
+      </text>
+      <text class="status-desc" wx:if="{{useMockData}}">(演示模式)</text>
+    </view>
+  </view>
+
+  <!-- 链接输入区域 -->
+  <view class="input-section">
+    <view class="input-title">粘贴视频链接</view>
+    <view class="link-input-container">
+      <textarea 
+        class="link-input" 
+        placeholder="请输入抖音、快手、B站等平台的视频链接..."
+        placeholder-style="color:#999"
+        value="{{videoLink}}"
+        bindinput="onLinkInput"
+        maxlength="500"
+        auto-height
+      ></textarea>
+      <view class="input-actions">
+        <text class="clear-btn" bindtap="clearLink" wx:if="{{videoLink}}">清空</text>
+        <text class="paste-btn" bindtap="pasteLink">粘贴</text>
+      </view>
+    </view>
+    
+    <view class="platform-tips">
+      <text class="tip-icon">💡</text>
+      <text class="tip-text">支持抖音、快手、B站、小红书等主流平台</text>
+    </view>
+  </view>
+
+  <!-- 提取按钮 -->
+  <view class="extract-section">
+    <button 
+      class="extract-btn {{videoLink ? 'active' : 'disabled'}}" 
+      bindtap="startExtract"
+      disabled="{{!videoLink}}"
+    >
+      {{extracting ? 'AI分析中...' : '开始AI提取'}}
+    </button>
+  </view>
+
+  <!-- 视频信息展示 -->
+  <view class="video-info" wx:if="{{videoInfo}}">
+    <view class="info-header">
+      <text class="info-title">视频信息</text>
+      <text class="info-platform">{{videoInfo.platform}}</text>
+    </view>
+    <view class="info-content">
+      <text class="info-item">标题：{{videoInfo.title}}</text>
+      <text class="info-item" wx:if="{{videoInfo.description}}">描述：{{videoInfo.description}}</text>
+      <text class="info-item">作者：{{videoInfo.author}}</text>
+      <text class="info-item">时长：{{videoInfo.duration}}</text>
+    </view>
+  </view>
+
+  <!-- 提取结果 -->
+  <view class="result-section" wx:if="{{extractResult}}">
+    <view class="result-header">
+      <text class="result-title">AI提取结果</text>
+      <view class="result-actions">
+        <text class="copy-btn" bindtap="copyResult">复制</text>
+        <text class="edit-btn" bindtap="editResult">编辑</text>
+      </view>
+    </view>
+    
+    <view class="result-content">
+      <text class="result-text" selectable>{{extractResult}}</text>
+    </view>
+    
+    <view class="result-stats">
+      <text>字数：{{wordCount}} 字</text>
+      <text>提取时间：{{extractTime}}</text>
+      <text wx:if="{{useMockData}}">模式：演示</text>
+    </view>
+  </view>
+
+  <!-- 历史记录 -->
+  <view class="history-section" wx:if="{{historyList.length > 0}}">
+    <view class="section-title">
+      <text>历史记录</text>
+      <text class="clear-history" bindtap="clearHistory">清空</text>
+    </view>
+    
+    <scroll-view scroll-y class="history-list">
+      <view class="history-item" wx:for="{{historyList}}" wx:key="id" bindtap="useHistory" data-item="{{item}}">
+        <view class="history-platform">{{item.platform}}</view>
+        <view class="history-link">{{item.link}}</view>
+        <view class="history-time">{{item.time}}</view>
+        <view class="history-mode" wx:if="{{item.apiUsed}}">AI</view>
+      </view>
+    </scroll-view>
+  </view>
+
+  <!-- 空状态 -->
+  <view class="empty-state" wx:if="{{!extractResult && historyList.length === 0}}">
+    <text class="empty-icon">🤖</text>
+    <text class="empty-text">AI文案提取助手</text>
+    <text class="empty-desc">粘贴视频链接，让豆包AI帮你提取文案</text>
+  </view>
+
+  <!-- 加载状态 -->
+  <view class="loading-state" wx:if="{{extracting}}">
+    <view class="loading-spinner"></view>
+    <text class="loading-text">豆包AI正在分析视频内容...</text>
+    <text class="loading-desc">解析链接 → 获取信息 → AI分析 → 生成文案</text>
+  </view>
+</view>

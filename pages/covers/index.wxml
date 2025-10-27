@@ -1,0 +1,104 @@
+<!--pages/covers/index.wxml-->
+<view class="container">
+  <!-- 页面头部 -->
+  <view class="page-header">
+    <view class="header-title">
+      <text class="header-icon">📚</text>
+      <text>书籍封面素材库</text>
+    </view>
+    <view class="header-desc">丰富的书籍封面资源，支持多种风格</view>
+  </view>
+
+  <!-- 搜索区域 -->
+  <view class="search-section">
+    <view class="search-input">
+      <input 
+        class="search-field" 
+        placeholder="搜索书籍封面..."
+        placeholder-class="search-placeholder"
+        value="{{searchKeyword}}"
+        bindinput="onSearchInput"
+        bindconfirm="onSearch"
+        bindfocus="onSearchFocus"
+        bindblur="onSearchBlur"
+        confirm-type="search"
+      />
+      <text class="search-icon" bindtap="onSearch">🔍</text>
+    </view>
+  </view>
+
+  <!-- 分类区域 -->
+  <view class="category-section">
+    <scroll-view class="category-scroll" scroll-x="true">
+      <view class="category-list">
+        <view 
+          wx:for="{{categories}}" 
+          wx:key="id"
+          class="category-item {{item.active ? 'active' : ''}}"
+          data-category="{{item.value}}"
+          bindtap="onCategoryClick"
+        >
+          {{item.name}}
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+
+
+
+  <!-- 封面网格 -->
+  <view class="covers-section">
+    <view class="covers-grid">
+      <view 
+        class="cover-item" 
+        wx:for="{{coverList}}" 
+        wx:key="id"
+      >
+        <image class="cover-image" src="{{item.image}}" mode="aspectFill" bindtap="previewCover" data-cover="{{item}}"></image>
+        <view class="cover-actions-top">
+          <text class="action-btn export-btn" catchtap="downloadCover" data-id="{{item.material_id}}">导出</text>
+        </view>
+        <view class="cover-info">
+          <text class="cover-title">{{item.title}}</text>
+          <text class="cover-author">{{item.author || '未知作者'}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 空状态 -->
+    <view class="empty-state" wx:if="{{coverList.length === 0}}">
+      <text class="empty-icon">📖</text>
+      <text class="empty-text">暂无相关封面</text>
+      <text class="empty-desc">尝试调整搜索条件</text>
+    </view>
+
+    <!-- 加载更多 -->
+    <view class="load-more" wx:if="{{hasMore}}">
+      <button class="load-btn" bindtap="loadMore">加载更多</button>
+    </view>
+  </view>
+
+  <!-- 预览模态框 -->
+  <view class="preview-modal" wx:if="{{showPreview}}">
+    <view class="modal-mask" bindtap="closePreview"></view>
+    <view class="modal-content">
+      <view class="preview-header">
+        <text class="preview-close" bindtap="closePreview">✕</text>
+      </view>
+      
+      <view class="image-container">
+        <image class="preview-image" src="{{previewCover.image}}" mode="widthFix"></image>
+      </view>
+      
+      <view class="preview-info">
+        <text class="preview-title">{{previewCover.title}}</text>
+        <text class="preview-author">{{previewCover.author || '未知作者'}}</text>
+        <text class="preview-desc">{{previewCover.description || '暂无描述'}}</text>
+      </view>
+      
+      <view class="preview-actions">
+        <button class="preview-btn save-btn" bindtap="downloadPreview">保存到相册</button>
+      </view>
+    </view>
+  </view>
+</view>

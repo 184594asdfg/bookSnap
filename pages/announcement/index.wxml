@@ -1,0 +1,76 @@
+<view class="container">
+  <!-- 顶部标题区域 -->
+  <view class="header-section">
+    <view class="header-content">
+      <text class="header-title">官方公告</text>
+      <text class="header-subtitle">产品更新与功能预告</text>
+    </view>
+  </view>
+
+  <!-- 官方公告区域 -->
+  <view class="announcement-section">
+    <!-- 下期预告卡片 -->
+    <view class="preview-card">
+      <view class="preview-header">
+        <text class="preview-title">📢 下期预告</text>
+        <view class="preview-badge">即将更新</view>
+      </view>
+      <view class="preview-content">
+        <text class="preview-text">我们正在开发以下功能，敬请期待：</text>
+        <view class="feature-list">
+          <view class="feature-item">
+            <text class="feature-icon">🎨</text>
+            <text class="feature-name">热门素材库</text>
+          </view>
+          <view class="feature-item">
+            <text class="feature-icon">🔤</text>
+            <text class="feature-name">推荐字体库</text>
+          </view>
+          <view class="feature-item">
+            <text class="feature-icon">💧</text>
+            <text class="feature-name">智能去水印</text>
+          </view>
+        </view>
+        <text class="update-time">预计更新时间：2024年12月</text>
+      </view>
+    </view>
+
+    <!-- 功能建议区域 -->
+    <view class="suggestion-section">
+      <view class="section-header">
+        <text class="section-title">💡 功能建议</text>
+        <text class="section-desc">告诉我们您想要的功能</text>
+      </view>
+      
+      <!-- 建议发布区域 -->
+      <view class="suggestion-input">
+        <textarea 
+          class="suggestion-textarea" 
+          placeholder="请描述您希望添加的功能..."
+          maxlength="200"
+          bindinput="onSuggestionInput"
+        ></textarea>
+        <view class="suggestion-actions">
+          <text class="char-count">{{charCount}}/200</text>
+          <button class="submit-btn" bindtap="submitSuggestion">提交建议</button>
+        </view>
+      </view>
+
+      <!-- 热门建议列表 -->
+      <view class="suggestion-list">
+        <view class="suggestion-item" wx:for="{{suggestions}}" wx:key="id">
+          <view class="suggestion-content">
+            <text class="suggestion-text">{{item.content}}</text>
+            <view class="suggestion-meta">
+              <text class="suggestion-time">{{item.time}}</text>
+              <text class="suggestion-votes">👍 {{item.votes}}</text>
+            </view>
+          </view>
+          <button class="vote-btn" bindtap="voteSuggestion" data-id="{{item.id}}">
+            <text class="vote-icon">👍</text>
+          </button>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

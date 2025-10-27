@@ -1,0 +1,106 @@
+<!--pages/templates/index.wxml-->
+<view class="container">
+  <!-- 页面头部 -->
+  <view class="page-header">
+    <view class="header-title">
+      <text class="header-icon">🎬</text>
+      <text>视频模板库</text>
+    </view>
+    <view class="header-desc">精选书单视频模板，快速生成专业内容</view>
+  </view>
+
+  <!-- 分类导航 -->
+  <view class="category-section">
+    <scroll-view class="category-scroll" scroll-x>
+      <view class="category-list">
+        <text 
+          class="category-item {{category.active ? 'active' : ''}}"
+          wx:for="{{categories}}" 
+          wx:key="id"
+          bindtap="onCategoryClick"
+          data-category="{{item.id}}"
+        >{{item.name}}</text>
+      </view>
+    </scroll-view>
+  </view>
+
+  <!-- 模板网格 -->
+  <view class="templates-section">
+    <view class="templates-grid">
+      <view 
+        class="template-item" 
+        wx:for="{{templateList}}" 
+        wx:key="id"
+        bindtap="previewTemplate"
+        data-template="{{item}}"
+      >
+        <view class="template-preview">
+          <image class="template-image" src="{{item.image}}" mode="aspectFill"></image>
+          <view class="template-overlay">
+            <text class="template-title">{{item.title}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 空状态 -->
+    <view class="empty-state" wx:if="{{templateList.length === 0}}">
+      <text class="empty-icon">🎥</text>
+      <text class="empty-text">暂无相关模板</text>
+      <text class="empty-desc">尝试切换分类查看</text>
+    </view>
+
+    <!-- 加载更多 -->
+    <!-- <view class="load-more" wx:if="{{hasMore}}">
+      <button class="load-btn" bindtap="loadMore">加载更多</button>
+    </view> -->
+    <!-- 加载完成提示 -->
+    <view class="load-complete" wx:if="{{templateList.length > 0 && !hasMore}}">
+      <text class="complete-text">已展示全部模板</text>
+    </view>
+  </view>
+
+  <!-- 预览模态框 -->
+  <view class="preview-modal" wx:if="{{showPreview}}">
+    <view class="modal-mask" bindtap="closePreview"></view>
+    <view class="modal-content">
+      <view class="preview-header">
+        <text class="preview-close" bindtap="closePreview">✕</text>
+      </view>
+      
+      <view class="video-container">
+        <video 
+          class="preview-video" 
+          src="{{previewTemplate.video}}" 
+          controls 
+          autoplay
+          show-center-play-btn
+          show-play-btn
+          object-fit="contain"
+          bindplay="onVideoPlay"
+          binderror="onVideoError"
+          wx:if="{{previewTemplate.video}}"
+        ></video>
+        <view class="video-placeholder" wx:if="{{!previewTemplate.video}}">
+          <text class="placeholder-icon">🎬</text>
+          <text class="placeholder-text">暂无视频预览</text>
+        </view>
+      </view>
+      
+      <!-- 模板名称移动到视频下方 -->
+      <view class="template-title-section">
+        <text class="template-title-below">{{previewTemplate.title}}</text>
+      </view>
+      
+      <view class="preview-info">
+        <text class="preview-desc">{{previewTemplate.description}}</text>
+      </view>
+      
+      <view class="preview-actions">
+        <button class="preview-btn save-btn" bindtap="downloadTemplate">下载草稿</button>
+      </view>
+    </view>
+  </view>
+
+
+</view>

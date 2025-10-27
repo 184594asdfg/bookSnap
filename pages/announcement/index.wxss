@@ -1,0 +1,246 @@
+/* 公告页面样式 */
+.container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+}
+
+/* 顶部标题区域 */
+.header-section {
+  background: linear-gradient(135deg, #8B4513 0%, #A0522D 100%);
+  padding: 60rpx 30rpx 40rpx;
+  color: white;
+}
+
+.header-content {
+  text-align: center;
+}
+
+.header-title {
+  font-size: 48rpx;
+  font-weight: bold;
+  display: block;
+  margin-bottom: 16rpx;
+}
+
+.header-subtitle {
+  font-size: 28rpx;
+  opacity: 0.9;
+}
+
+/* 公告区域 */
+.announcement-section {
+  padding: 40rpx 30rpx;
+}
+
+/* 下期预告卡片 */
+.preview-card {
+  background: white;
+  border-radius: 20rpx;
+  padding: 40rpx 32rpx;
+  box-shadow: 0 8rpx 32rpx rgba(139, 69, 19, 0.1);
+  border: 1rpx solid rgba(139, 69, 19, 0.1);
+  margin-bottom: 40rpx;
+}
+
+.preview-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24rpx;
+}
+
+.preview-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #8B4513;
+}
+
+.preview-badge {
+  background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
+  color: white;
+  font-size: 22rpx;
+  padding: 8rpx 16rpx;
+  border-radius: 20rpx;
+  font-weight: 600;
+}
+
+.preview-content {
+  line-height: 1.6;
+}
+
+.preview-text {
+  font-size: 28rpx;
+  color: #666;
+  display: block;
+  margin-bottom: 24rpx;
+}
+
+.feature-list {
+  margin: 24rpx 0;
+}
+
+.feature-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16rpx;
+  padding: 16rpx;
+  background: rgba(139, 69, 19, 0.05);
+  border-radius: 12rpx;
+}
+
+.feature-icon {
+  font-size: 32rpx;
+  margin-right: 16rpx;
+}
+
+.feature-name {
+  font-size: 26rpx;
+  color: #333;
+  font-weight: 500;
+}
+
+.update-time {
+  font-size: 24rpx;
+  color: #999;
+  font-style: italic;
+}
+
+/* 功能建议区域 */
+.suggestion-section {
+  background: white;
+  border-radius: 20rpx;
+  padding: 40rpx 32rpx;
+  box-shadow: 0 8rpx 32rpx rgba(139, 69, 19, 0.1);
+  border: 1rpx solid rgba(139, 69, 19, 0.1);
+}
+
+.section-header {
+  text-align: center;
+  margin-bottom: 32rpx;
+}
+
+.section-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #8B4513;
+  display: block;
+  margin-bottom: 8rpx;
+}
+
+.section-desc {
+  font-size: 26rpx;
+  color: #666;
+}
+
+/* 建议输入区域 */
+.suggestion-input {
+  margin-bottom: 40rpx;
+}
+
+.suggestion-textarea {
+  width: 100%;
+  height: 200rpx;
+  background: #f8f9fa;
+  border: 1rpx solid #e9ecef;
+  border-radius: 12rpx;
+  padding: 24rpx;
+  font-size: 28rpx;
+  color: #333;
+  margin-bottom: 20rpx;
+}
+
+.suggestion-textarea::placeholder {
+  color: #999;
+}
+
+.suggestion-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.char-count {
+  font-size: 24rpx;
+  color: #999;
+}
+
+.submit-btn {
+  background: linear-gradient(135deg, #8B4513 0%, #A0522D 100%);
+  color: white;
+  border: none;
+  border-radius: 20rpx;
+  padding: 16rpx 32rpx;
+  font-size: 26rpx;
+  font-weight: 600;
+}
+
+.submit-btn:active {
+  opacity: 0.8;
+  transform: scale(0.98);
+}
+
+/* 建议列表 */
+.suggestion-list {
+  max-height: 600rpx;
+  overflow-y: auto;
+}
+
+.suggestion-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 24rpx;
+  background: #f8f9fa;
+  border-radius: 12rpx;
+  margin-bottom: 20rpx;
+}
+
+.suggestion-content {
+  flex: 1;
+  margin-right: 20rpx;
+}
+
+.suggestion-text {
+  font-size: 26rpx;
+  color: #333;
+  line-height: 1.5;
+  margin-bottom: 12rpx;
+  display: block;
+}
+
+.suggestion-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.suggestion-time {
+  font-size: 22rpx;
+  color: #999;
+}
+
+.suggestion-votes {
+  font-size: 22rpx;
+  color: #8B4513;
+  font-weight: 600;
+}
+
+.vote-btn {
+  background: rgba(139, 69, 19, 0.1);
+  border: none;
+  border-radius: 50%;
+  width: 60rpx;
+  height: 60rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.vote-btn:active {
+  background: rgba(139, 69, 19, 0.2);
+}
+
+.vote-icon {
+  font-size: 24rpx;
+}

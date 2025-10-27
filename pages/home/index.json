@@ -1,0 +1,10 @@
+{
+  "navigationBarTitleText": "书单助手",
+  "enablePullDownRefresh": true,
+  "backgroundColor": "#f8f4f0",
+  "backgroundTextStyle": "dark",
+  "onReachBottomDistance": 50,
+  "usingComponents": {
+    "custom-tab-bar": "/custom-tab-bar/index"
+  }
+}
