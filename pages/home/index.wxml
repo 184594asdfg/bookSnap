@@ -1,13 +1,13 @@
 <view class="container">
   <!-- 顶部英雄区域 -->
-  <view class="hero-section">
+  <view class="hero-section" style="height: {{homeConfig.heroHeight}}; background: {{homeConfig.heroGradient}}">
     <view class="hero-content">
       <!-- 应用logo和名称 -->
       <view class="app-logo">
         <text class="logo-icon">📚</text>
         <view class="logo-text">
-          <text class="app-name">书单助手</text>
-          <text class="app-tagline">智能创作，轻松上手</text>
+          <text class="app-name">{{homeConfig.heroTitle}}</text>
+          <text class="app-tagline">{{homeConfig.heroTagline}}</text>
         </view>
       </view>
     </view>
@@ -15,69 +15,29 @@
 
   <!-- 功能入口区域 -->
   <view class="features-section">
+
+    
     <view class="features-grid">
-      <!-- 封面素材 -->
-      <view class="feature-card" bindtap="gotoCovers">
-        <view class="feature-icon">📖</view>
-        <view class="feature-info">
-          <text class="feature-name">封面素材</text>
-          <text class="feature-desc">海量高清书籍封面</text>
-        </view>
-        <view class="feature-badge">推荐</view>
-      </view>
+      <block wx:for="{{sections}}" wx:key="sectionKey">
+        <!-- 动态渲染功能板块 -->
+        <view 
+          wx:if="{{item.isEnabled === 0}}"
+          class="feature-card {{item.isDisabled === 1 ? 'disabled' : ''}}"
+          bindtap="navigateToSection"
+          data-section="{{item}}"
+        >
+          <view class="feature-icon">{{item.sectionIcon}}</view>
+          <view class="feature-info">
+            <text class="feature-name">{{item.sectionName}}</text>
+            <text class="feature-desc">{{item.sectionDesc || '暂无描述'}}</text>
 
-      <!-- 视频模板 -->
-      <view class="feature-card" bindtap="gotoTemplates">
-        <view class="feature-icon">🎬</view>
-        <view class="feature-info">
-          <text class="feature-name">视频模板</text>
-          <text class="feature-desc">热门书单视频模板</text>
+          </view>
+          <view class="feature-badge {{item.badgeType === 'coming-soon' ? 'coming-soon' : ''}}">
+            {{item.badgeText}}
+          </view>
         </view>
-        <view class="feature-badge">热门</view>
-      </view>
 
-      <!-- 去水印 -->
-      <view class="feature-card disabled" bindtap="gotoWatermark">
-        <view class="feature-icon">💧</view>
-        <view class="feature-info">
-          <text class="feature-name">去水印</text>
-          <text class="feature-desc">智能去除视频水印</text>
-        </view>
-        <view class="feature-badge coming-soon">即将上线</view>
-      </view>
-
-      <!-- 文案提取 -->
-      <view class="feature-card disabled" bindtap="gotoTextExtract">
-        <view class="feature-icon">📝</view>
-        <view class="feature-info">
-          <text class="feature-name">文案提取</text>
-          <text class="feature-desc">智能提取视频文案</text>
-        </view>
-        <view class="feature-badge coming-soon">即将上线</view>
-      </view>
-
-      <!-- 热门素材 -->
-      <view class="feature-card disabled" bindtap="gotoHotMaterials">
-        <view class="feature-icon">🎨</view>
-        <view class="feature-info">
-          <text class="feature-name">热门素材</text>
-          <text class="feature-desc">丰富的剪辑素材库</text>
-        </view>
-        <view class="feature-badge coming-soon">即将上线</view>
-      </view>
-
-      <!-- 推荐字体 -->
-      <view class="feature-card disabled" bindtap="gotoFonts">
-        <view class="feature-icon">🔤</view>
-        <view class="feature-info">
-          <text class="feature-name">推荐字体</text>
-          <text class="feature-desc">精选书单专用字体</text>
-        </view>
-        <view class="feature-badge coming-soon">即将上线</view>
-      </view>
+      </block>
     </view>
   </view>
-
-
-
 </view>

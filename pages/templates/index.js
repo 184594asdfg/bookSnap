@@ -35,19 +35,37 @@ Page({
   filterTemplates() {
     const { categories } = this.data;
     const activeCategory = categories.find(category => category.active);
+    
+    // 保存原始数据到临时变量，避免在过滤时丢失
+    if (!this._originalTemplateList) {
+      this._originalTemplateList = [...this.data.templateList];
+    }
 
     // 根据分类过滤模板
-    let filteredTemplates = [...this.data.templateList];
+    let filteredTemplates = [];
     
     if (activeCategory.value === 'all') {
       // 显示全部模板
-      filteredTemplates = this.data.templateList;
+      filteredTemplates = [...this._originalTemplateList];
     } else {
       // 按分类过滤
-      filteredTemplates = filteredTemplates.filter(template => template.category === activeCategory.value);
+      filteredTemplates = this._originalTemplateList.filter(template => 
+        template.category === activeCategory.value
+      );
     }
+    
+    console.log(`过滤后模板数量: ${filteredTemplates.length}, 分类: ${activeCategory.name}`);
 
     this.setData({ templateList: filteredTemplates });
+    
+    // 如果过滤后没有数据，显示提示
+    if (filteredTemplates.length === 0) {
+      wx.showToast({
+        title: `暂无${activeCategory.name}类型的模板`,
+        icon: 'none',
+        duration: 1500
+      });
+    }
   },
 
   // 加载模板数据
@@ -63,15 +81,44 @@ Page({
       success: (res) => {
         wx.hideLoading();
         
+        // 打印完整的API响应
+        console.log('模板API返回结果:', res);
+        console.log('响应数据类型:', typeof res.data);
+        console.log('响应数据:', JSON.stringify(res.data));
+        
         try {
-          // 检查响应状态和数据格式
-          if (res.statusCode === 200 && res.data.success) {
-            const apiData = res.data.data;
+          // 检查响应状态
+          if (res.statusCode === 200) {
+            let templatesData = [];
             
-            // 根据实际API数据结构处理
-            if (apiData && apiData.list && Array.isArray(apiData.list)) {
-              // 转换API数据格式为前端需要的格式
-              const templateList = apiData.list.map(item => ({
+            // 灵活处理多种数据格式
+            if (Array.isArray(res.data)) {
+              // 如果返回的是直接数组
+              console.log('检测到直接数组格式，数据长度:', res.data.length);
+              templatesData = res.data;
+            } 
+            else if (res.data.success && res.data.data && res.data.data.list) {
+              // 检查data.list是否为数组
+              if (Array.isArray(res.data.data.list)) {
+                console.log('检测到标准格式，list长度:', res.data.data.list.length);
+                templatesData = res.data.data.list;
+              } else {
+                console.log('data.list不是数组:', typeof res.data.data.list);
+              }
+            }
+            else if (res.data.data && Array.isArray(res.data.data)) {
+              // 检查data是否为数组
+              console.log('检测到data字段是数组，长度:', res.data.data.length);
+              templatesData = res.data.data;
+            }
+            
+            // 打印转换前的数据长度
+            console.log('转换前模板数量:', templatesData.length);
+            
+            // 转换API数据格式为前端需要的格式
+            const templateList = templatesData.map((item, index) => {
+              console.log(`${index + 1}. 原始模板数据:`, item);
+              return {
                 id: item.template_id || item.id || Math.random().toString(36).substr(2, 9),
                 // 使用与封面素材库相同的COS配置，但文件夹改为bookTemp，对中文字符进行URL编码
                 image: item.preview_file ? `https://booksnap-1353983545.cos.ap-beijing.myqcloud.com/bookTemp/${encodeURIComponent(item.preview_file)}` : '/images/default-template.jpg',
@@ -83,30 +130,44 @@ Page({
                 duration: item.duration || '30秒', // 使用API返回的时长信息
                 usageCount: item.like_count || item.usage_count || 0,
                 isFavorite: false // 默认未收藏
-              }));
-              
-              this.setData({
-                templateList: templateList
-              });
-            } else {
-              throw new Error('API返回数据格式不正确: list字段不存在或不是数组');
-            }
+              };
+            });
+            
+            console.log('转换后模板数量:', templateList.length);
+            
+            // 设置数据
+            this.setData({
+              templateList: templateList,
+              hasMore: templateList.length >= 10 // 假设每页至少10条数据
+            });
+            
+            // 初始化过滤
+            this.filterTemplates();
+            
+            // 显示成功提示
+            wx.showToast({
+              title: `成功加载${templateList.length}个模板`,
+              icon: 'none',
+              duration: 1500
+            });
           } else {
-            throw new Error(`API请求失败: ${res.data.message || '未知错误'}`);
+            throw new Error(`API请求失败，状态码: ${res.statusCode}`);
           }
         } catch (error) {
           wx.showToast({
             title: '数据格式错误',
             icon: 'error'
           });
+          console.error('加载模板失败:', error);
         }
       },
-      fail: (err) => {
+      fail: (error) => {
         wx.hideLoading();
         wx.showToast({
           title: '网络请求失败',
-          icon: 'none'
+          icon: 'error'
         });
+        console.error('网络请求失败:', error);
       }
     });
   },
